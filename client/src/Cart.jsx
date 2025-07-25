@@ -1,4 +1,4 @@
-vimport { useCart } from './CartContext';
+import { useCart } from './CartContext';
 import { useNavigate } from 'react-router-dom';
 import { useMemo } from 'react';
 

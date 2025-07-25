@@ -42,7 +42,7 @@ export default function Checkout() {
                 customerAddress: form.address,
             });
             setOrderId(res._id);
-            clearCart();
+            // clearCart(); ❌ Removed — moved to after M-Pesa success
         } catch (err) {
             setError(err.message || 'Failed to place order');
         }
@@ -59,6 +59,7 @@ export default function Checkout() {
                 phone: mpesaPhone,
             });
             setMpesaStatus('success');
+            clearCart(); // ✅ Now cart is cleared only after successful payment
         } catch {
             setMpesaStatus('fail');
         }
