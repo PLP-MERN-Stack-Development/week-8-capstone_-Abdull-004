@@ -1,84 +1,104 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useCart } from './CartContext';
-import { useNavigate } from 'react-router-dom';
+import { apiRequest } from './api';
 
-const Checkout = () => {
+export default function Checkout() {
     const { cartItems, clearCart } = useCart();
-    const [phoneNumber, setPhoneNumber] = useState('');
-    const [message, setMessage] = useState('');
-    const navigate = useNavigate();
+    const [formData, setFormData] = useState({
+        fullName: '',
+        phoneNumber: '',
+        address: '',
+    });
 
-    const totalPrice = cartItems.reduce((acc, item) => acc + item.price, 0);
+    const [error, setError] = useState('');
+    const [success, setSuccess] = useState('');
+    const [loading, setLoading] = useState(false);
 
-    const handlePayment = async () => {
-        if (!phoneNumber || cartItems.length === 0) {
-            setMessage('Please enter a phone number and ensure your cart is not empty.');
+    const handleChange = (e) => {
+        setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setError('');
+        setSuccess('');
+
+        if (cartItems.length === 0) {
+            setError('Your cart is empty.');
+            return;
+        }
+
+        const { fullName, phoneNumber, address } = formData;
+        if (!fullName || !phoneNumber || !address) {
+            setError('Please fill all fields');
             return;
         }
 
         try {
-            const response = await fetch('http://localhost:5000/api/mpesa/stkpush', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    phone: phoneNumber,
-                    amount: totalPrice
-                })
+            setLoading(true);
+
+            const response = await apiRequest('/orders', 'POST', {
+                customer: fullName,
+                phone: phoneNumber,
+                address,
+                items: cartItems,
             });
 
-            const data = await response.json();
-
-            if (response.ok) {
-                setMessage('Payment initiated successfully!');
-                clearCart();
-                setTimeout(() => navigate('/'), 2000);
+            if (response.success) {
+                setSuccess('Order placed successfully. Await M-Pesa prompt.');
+                clearCart(); // clear only after success
             } else {
-                setMessage(data.message || 'Payment failed');
+                setError(response.message || 'Order failed');
             }
-        } catch (error) {
-            console.error(error);
-            setMessage('Error initiating payment.');
+        } catch (err) {
+            console.error(err);
+            setError('An error occurred');
+        } finally {
+            setLoading(false);
         }
     };
 
     return (
-        <div className="max-w-xl mx-auto mt-10 p-4 bg-white shadow rounded">
-            <h1 className="text-2xl font-bold mb-4">Checkout</h1>
+        <div className="max-w-xl mx-auto bg-white p-6 rounded-xl shadow-lg mt-10">
+            <h2 className="text-2xl font-bold mb-4 text-green-800">Checkout</h2>
 
-            {cartItems.length === 0 ? (
-                <p className="text-red-500">Your cart is empty.</p>
-            ) : (
-                <>
-                    <ul className="mb-4">
-                        {cartItems.map((item, index) => (
-                            <li key={index} className="border-b py-2 flex justify-between">
-                                <span>{item.name}</span>
-                                <span>KES {item.price}</span>
-                            </li>
-                        ))}
-                    </ul>
-                    <p className="font-semibold mb-4">Total: KES {totalPrice}</p>
+            {error && <div className="bg-red-100 text-red-800 px-4 py-2 rounded mb-4">{error}</div>}
+            {success && <div className="bg-green-100 text-green-800 px-4 py-2 rounded mb-4">{success}</div>}
 
-                    <input
-                        type="tel"
-                        placeholder="Enter Safaricom phone number"
-                        value={phoneNumber}
-                        onChange={(e) => setPhoneNumber(e.target.value)}
-                        className="w-full p-2 border rounded mb-4"
-                    />
+            <form onSubmit={handleSubmit} className="space-y-4">
+                <input
+                    type="text"
+                    name="fullName"
+                    placeholder="Full Name"
+                    className="w-full px-4 py-2 border rounded"
+                    value={formData.fullName}
+                    onChange={handleChange}
+                />
+                <input
+                    type="text"
+                    name="phoneNumber"
+                    placeholder="Phone Number"
+                    className="w-full px-4 py-2 border rounded"
+                    value={formData.phoneNumber}
+                    onChange={handleChange}
+                />
+                <input
+                    type="text"
+                    name="address"
+                    placeholder="Delivery Address"
+                    className="w-full px-4 py-2 border rounded"
+                    value={formData.address}
+                    onChange={handleChange}
+                />
 
-                    <button
-                        onClick={handlePayment}
-                        className="w-full bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded"
-                    >
-                        Pay with M-Pesa
-                    </button>
-                </>
-            )}
-
-            {message && <p className="mt-4 text-blue-600">{message}</p>}
+                <button
+                    type="submit"
+                    className="bg-green-700 text-white px-6 py-2 rounded hover:bg-green-800"
+                    disabled={loading}
+                >
+                    {loading ? 'Processing...' : 'Place Order'}
+                </button>
+            </form>
         </div>
     );
-};
-
-export default Checkout;
+}
