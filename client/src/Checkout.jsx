@@ -41,7 +41,7 @@ export default function Checkout() {
                 customerPhone: form.phone,
                 customerAddress: form.address,
             });
-            setOrderId(res._id);
+            setOrderId(res.order._id);
             clearCart();
         } catch (err) {
             setError(err.message || 'Failed to place order');
