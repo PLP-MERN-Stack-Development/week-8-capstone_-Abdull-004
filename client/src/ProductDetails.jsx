@@ -55,10 +55,10 @@ export default function ProductDetails() {
                 onClick={handleAddToCart}
                 disabled={added || product.stock === 0}
                 className={`px-6 py-2 rounded font-semibold transition ${product.stock === 0
-                    ? 'bg-gray-400 text-white cursor-not-allowed'
-                    : added
-                        ? 'bg-green-500 text-white'
-                        : 'bg-green-700 hover:bg-green-800 text-white'
+                        ? 'bg-gray-400 text-white cursor-not-allowed'
+                        : added
+                            ? 'bg-green-500 text-white'
+                            : 'bg-green-700 hover:bg-green-800 text-white'
                     }`}
             >
                 {product.stock === 0

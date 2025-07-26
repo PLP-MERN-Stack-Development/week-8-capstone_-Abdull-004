@@ -1,8 +1,9 @@
-// postcss.config.js (New/Correct)
+import tailwindcss from '@tailwindcss/postcss'
+import autoprefixer from 'autoprefixer'
 
 export default {
-    plugins: {
-        '@tailwindcss/postcss': {}, // <-- Change to this
-        // autoprefixer is no longer needed with modern Tailwind CSS
-    },
+    plugins: [
+        tailwindcss,
+        autoprefixer
+    ]
 }

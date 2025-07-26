@@ -1,52 +1,123 @@
-# MERN Stack Capstone Project
+# 🌾 Garissa Market Hub
 
-This assignment focuses on designing, developing, and deploying a comprehensive full-stack MERN application that showcases all the skills you've learned throughout the course.
+Garissa Market Hub is a full-stack agrovet e-commerce platform built with the **MERN stack** (MongoDB, Express.js, React.js, Node.js). The application allows customers to browse, add to cart, and purchase agrovet products, while providing an admin dashboard for managing inventory and orders.
 
-## Assignment Overview
+---
 
-You will:
-1. Plan and design a full-stack MERN application
-2. Develop a robust backend with MongoDB, Express.js, and Node.js
-3. Create an interactive frontend with React.js
-4. Implement testing across the entire application
-5. Deploy the application to production
+## 🚀 Features
 
-## Getting Started
+### 🛍 For Customers
+- Browse agrovet products with images, prices, and descriptions
+- Add items to cart and proceed to checkout
+- Pay via **M-Pesa** integration (Kenya mobile payment)
+- Responsive design for mobile and desktop users
 
-1. Accept the GitHub Classroom assignment
-2. Clone the repository to your local machine
-3. Follow the instructions in the `Week8-Assignment.md` file
-4. Plan, develop, and deploy your capstone project
+### 🛠 For Admins
+- Secure admin login
+- Full CRUD operations for product management
+- Order management (view and track user orders)
+- Dashboard with stock insights and order summaries
 
-## Files Included
+---
 
-- `Week8-Assignment.md`: Detailed assignment instructions
+## 🧰 Tech Stack
 
-## Requirements
+- **Frontend**: React.js, Tailwind CSS, Vite
+- **Backend**: Node.js, Express.js
+- **Database**: MongoDB
+- **Authentication**: JSON Web Tokens (JWT)
+- **Payments**: M-Pesa (Safaricom Daraja API)
+- **Deployment**: Vercel (frontend), Render / Railway / Cyclic (backend)
 
-- Node.js (v18 or higher)
-- MongoDB (local installation or Atlas account)
-- npm or yarn
-- Git and GitHub account
-- Accounts on deployment platforms (Render/Vercel/Netlify/etc.)
+---
 
-## Project Ideas
+## 🗂 Folder Structure
 
-The `Week8-Assignment.md` file includes several project ideas, but you're encouraged to develop your own idea that demonstrates your skills and interests.
+garissa-market-hub/
+├── client/ # React frontend
+│ ├── src/
+│ │ ├── components/
+│ │ ├── pages/
+│ │ ├── context/ # Cart context, Auth context
+│ │ └── App.jsx
+│ └── index.html
+├── server/ # Node + Express backend
+│ ├── controllers/
+│ ├── routes/
+│ ├── models/
+│ └── server.js
+└── README.md
 
-## Submission
+yaml
+Copy
+Edit
 
-Your project will be automatically submitted when you push to your GitHub Classroom repository. Make sure to:
+---
 
-1. Commit and push your code regularly
-2. Include comprehensive documentation
-3. Deploy your application and add the live URL to your README.md
-4. Create a video demonstration and include the link in your README.md
+## 🔧 Getting Started
 
-## Resources
+### 1. Clone the Repository
 
-- [MongoDB Documentation](https://docs.mongodb.com/)
-- [Express.js Documentation](https://expressjs.com/)
-- [React Documentation](https://react.dev/)
-- [Node.js Documentation](https://nodejs.org/en/docs/)
-- [GitHub Classroom Guide](https://docs.github.com/en/education/manage-coursework-with-github-classroom) 
+```bash
+git clone https://github.com/YOUR_USERNAME/garissa-market-hub.git
+cd garissa-market-hub
+2. Install Dependencies
+Backend
+bash
+Copy
+Edit
+cd server
+pnpm install
+Frontend
+bash
+Copy
+Edit
+cd ../client
+pnpm install
+3. Set Up Environment Variables
+Create .env files in the /server folder:
+
+ini
+Copy
+Edit
+MONGO_URI=your_mongodb_uri
+JWT_SECRET=your_jwt_secret
+MPESA_CONSUMER_KEY=your_mpesa_key
+MPESA_CONSUMER_SECRET=your_mpesa_secret
+CALLBACK_URL=https://your-backend.com/mpesa/callback
+4. Run the App Locally
+Start Backend
+bash
+Copy
+Edit
+cd server
+pnpm run dev
+Start Frontend
+bash
+Copy
+Edit
+cd client
+pnpm run dev
+🧪 Testing
+✅ Unit tests with Jest
+
+✅ Integration tests with Supertest (backend)
+
+✅ E2E testing with Cypress (frontend)
+
+🌐 Deployment
+Frontend hosted on Vercel
+
+Backend deployed to Render or Railway
+
+MongoDB hosted on MongoDB Atlas
+
+👤 Admin Access
+To access the admin dashboard:
+
+Go to /admin
+
+Login with the admin email & password
+
+Only verified admins have access to product and order management features.
+

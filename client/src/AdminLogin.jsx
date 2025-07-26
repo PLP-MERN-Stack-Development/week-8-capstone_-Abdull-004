@@ -86,8 +86,8 @@ export default function AdminLogin() {
                         type="submit"
                         disabled={loading}
                         className={`w-full py-2 rounded font-semibold transition-colors ${loading
-                            ? 'bg-green-400 cursor-not-allowed'
-                            : 'bg-green-700 hover:bg-green-800 text-white'
+                                ? 'bg-green-400 cursor-not-allowed'
+                                : 'bg-green-700 hover:bg-green-800 text-white'
                             }`}
                     >
                         {loading ? 'Logging in...' : 'Login'}
